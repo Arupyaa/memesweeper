@@ -50,9 +50,9 @@ bool MemeSweeper::CheckMeme(Vei2 & gridpos)
 void MemeSweeper::DrawField(Graphics & gfx)
 {
 	gfx.DrawRect(rec, Colors::Gray);
-	for (Vei2 gridpos{ 0,0 }; gridpos.x < width; ++gridpos.x)
+	for (Vei2 gridpos{ Xstart,Ystart}; gridpos.x < width+Xstart; ++gridpos.x)
 	{
-		for (gridpos.y = 0; gridpos.y < height; ++gridpos.y)
+		for (gridpos.y = Ystart; gridpos.y < height + Ystart; ++gridpos.y)
 		{
 			GetTitle(gridpos).DrawTitle(gridpos*SpriteCodex::tileSize,gfx,IsFucked);
 		}

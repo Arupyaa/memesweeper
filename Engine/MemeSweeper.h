@@ -36,9 +36,10 @@ private:
 	};
 	int CountNeighbouringMemes(Vei2& gridpos);
 	Title& GetTitle(Vei2& gridpos);
-	static const int width = 32;
-	static const int height = 28;
+	static const int width = 26;
+	static const int height = 24;
 	Title Field[width*height];
-	RectI rec = { 0,width*SpriteCodex::tileSize,0,height*SpriteCodex::tileSize };
-	
+	RectI rec = { Xstart*SpriteCodex::tileSize,(width+Xstart)*SpriteCodex::tileSize,Ystart*SpriteCodex::tileSize,(height+Ystart)*SpriteCodex::tileSize };
+	static constexpr int Xstart = (Graphics::ScreenWidth/2 / SpriteCodex::tileSize) - width / 2;
+	static constexpr int Ystart =(Graphics::ScreenHeight/2 / SpriteCodex::tileSize) - height / 2;
 };
