@@ -1,6 +1,7 @@
 #pragma once
 #include "Vei2.h" 
 #include "Graphics.h"
+#include "SpriteCodex.h"
 
 class MemeSweeper
 {
@@ -28,4 +29,5 @@ private:
 	static const int width = 32;
 	static const int height = 28;
 	Title Field[width*height];
+	RectI rec = { 0,width*SpriteCodex::tileSize,0,height*SpriteCodex::tileSize };
 };
