@@ -60,6 +60,15 @@ void MemeSweeper::RevealedOnClick(Vei2 & gridpos)
 	GetTitle(gridpos / SpriteCodex::tileSize).SetReveal();
 }
 
+void MemeSweeper::FlaggedOnClick(Vei2 & gridpos)
+{
+	assert(gridpos.x > 0
+		&& gridpos.x < width*SpriteCodex::tileSize
+		&& gridpos.y < height*SpriteCodex::tileSize
+		&& gridpos.y > 0);
+	GetTitle(gridpos / SpriteCodex::tileSize).SetFlagged();
+}
+
 
 
 MemeSweeper::Title & MemeSweeper::GetTitle(Vei2 & gridpos)
@@ -103,4 +112,21 @@ void MemeSweeper::Title::SetReveal()
 bool MemeSweeper::Title::IsRevealed()
 {
 	return state == State::revealed;
+}
+
+void MemeSweeper::Title::SetFlagged()
+{
+	if (state == hidden)
+	{
+		state = State::flagged;
+	}
+	else if (state == flagged)
+	{
+		state = State::hidden;
+	}
+}
+
+bool MemeSweeper::Title::IsFlagged()
+{
+	return state == State::flagged;
 }
