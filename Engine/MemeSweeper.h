@@ -22,6 +22,7 @@ private:
 	bool IsRevealed();
 	void SetFlagged();
 	bool IsFlagged();
+	void SetNumMemes(int nMemesCount);
 		enum State
 		{
 			hidden,
@@ -30,7 +31,9 @@ private:
 		};
 		bool HasMeme = false;
 		State state = State::hidden;
+		int nNeighbouringMemes = -1;
 	};
+	int CountNeighbouringMemes(Vei2& gridpos);
 	Title& GetTitle(Vei2& gridpos);
 	static const int width = 32;
 	static const int height = 28;

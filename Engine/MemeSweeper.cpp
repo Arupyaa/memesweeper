@@ -2,6 +2,7 @@
 #include <random>
 #include "SpriteCodex.h"
 #include <assert.h>
+#include <algorithm>
 
 MemeSweeper::MemeSweeper(int nMemes)
 {
@@ -23,14 +24,21 @@ MemeSweeper::MemeSweeper(int nMemes)
 	}
 
 	//reveal test
-	for (int i = 0; i <= 70; ++i)
+	//for (int i = 0; i <= 70; ++i)
+	//{
+	//	Vei2 randompos;
+	//	do
+	//	{
+	//		randompos = { xdist(rng),ydist(rng) };
+	//	} while (GetTitle(randompos).IsRevealed());
+	//	GetTitle(randompos).SetReveal();
+	//}
+	for (Vei2 gridpos{ 0,0 }; gridpos.x < width; ++gridpos.x)
 	{
-		Vei2 randompos;
-		do
+		for (gridpos.y = 0; gridpos.y < height; ++gridpos.y)
 		{
-			randompos = { xdist(rng),ydist(rng) };
-		} while (GetTitle(randompos).IsRevealed());
-		GetTitle(randompos).SetReveal();
+			GetTitle(gridpos).SetNumMemes(CountNeighbouringMemes(gridpos));
+		}
 	}
 }
 
@@ -71,6 +79,27 @@ void MemeSweeper::FlaggedOnClick(Vei2 & gridpos)
 
 
 
+int MemeSweeper::CountNeighbouringMemes(Vei2 & gridpos)
+{
+	int count = 0;
+	int Xstart = std::max(0, gridpos.x - 1);
+	int Ystart = std::max(0, gridpos.y - 1);
+	int Xend = std::min(width, gridpos.x + 1);
+	int Yend = std::min(height, gridpos.y + 1);
+	
+	for (Vei2 pos{ Xstart,Ystart }; pos.x <= Xend; ++pos.x)
+	{
+		for (pos.y = Ystart; pos.y <= Yend; ++pos.y)
+		{
+			if (GetTitle(pos).HasMeme)
+			{
+				++count;
+			}
+		}
+	}
+	return count;
+}
+
 MemeSweeper::Title & MemeSweeper::GetTitle(Vei2 & gridpos)
 {
 	return Field[gridpos.y*width + gridpos.x];
@@ -91,7 +120,7 @@ void MemeSweeper::Title::DrawTitle(Vei2 & screenpos, Graphics & gfx)
 	case revealed:
 		if (!HasMeme)
 		{
-			SpriteCodex::DrawTile0(screenpos, gfx);
+			SpriteCodex::DrawTileNum(screenpos, nNeighbouringMemes,gfx);
 		}
 		else
 		{
@@ -129,4 +158,10 @@ void MemeSweeper::Title::SetFlagged()
 bool MemeSweeper::Title::IsFlagged()
 {
 	return state == State::flagged;
+}
+
+void MemeSweeper::Title::SetNumMemes(int nMemesCount)
+{
+	assert(nMemesCount >= 0 && nMemesCount <= 8);
+	nNeighbouringMemes = nMemesCount;
 }
