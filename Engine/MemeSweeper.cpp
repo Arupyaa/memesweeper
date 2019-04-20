@@ -19,6 +19,17 @@ MemeSweeper::MemeSweeper(int nMemes)
 		} while (CheckMeme(gridpos));
 		GetTitle(gridpos).SpawnMeme();
 	}
+
+	//reveal test
+	for (int i = 0; i <= 70; ++i)
+	{
+		Vei2 randompos;
+		do
+		{
+			randompos = { xdist(rng),ydist(rng) };
+		} while (GetTitle(randompos).IsRevealed());
+		GetTitle(randompos).SetReveal();
+	}
 }
 
 bool MemeSweeper::CheckMeme(Vei2 & gridpos)
@@ -36,6 +47,11 @@ void MemeSweeper::DrawField(Graphics & gfx)
 			GetTitle(gridpos).DrawTitle(gridpos*SpriteCodex::tileSize,gfx);
 		}
 	}
+}
+
+void MemeSweeper::RevealedOnClick(Vei2 & gridpos)
+{
+	GetTitle(gridpos / SpriteCodex::tileSize).SetReveal();
 }
 
 
@@ -71,4 +87,14 @@ void MemeSweeper::Title::DrawTitle(Vei2 & screenpos, Graphics & gfx)
 		SpriteCodex::DrawTileButton(screenpos, gfx);
 		SpriteCodex::DrawTileFlag(screenpos, gfx);
 	}
+}
+
+void MemeSweeper::Title::SetReveal()
+{
+	state = State::revealed;
+}
+
+bool MemeSweeper::Title::IsRevealed()
+{
+	return state == State::revealed;
 }

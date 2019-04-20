@@ -9,6 +9,7 @@ public:
 	MemeSweeper(int nMemes);
 	bool CheckMeme(Vei2& gridpos);
 	void DrawField(Graphics& gfx);
+	void RevealedOnClick(Vei2& gridpos); 
 	
 private:
 	class Title
@@ -16,6 +17,8 @@ private:
 	public:
 	void SpawnMeme();
 	void DrawTitle(Vei2& screenpos, Graphics& gfx);
+	void SetReveal();
+	bool IsRevealed();
 		enum State
 		{
 			hidden,
