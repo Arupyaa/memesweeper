@@ -54,27 +54,37 @@ void MemeSweeper::DrawField(Graphics & gfx)
 	{
 		for (gridpos.y = 0; gridpos.y < height; ++gridpos.y)
 		{
-			GetTitle(gridpos).DrawTitle(gridpos*SpriteCodex::tileSize,gfx);
+			GetTitle(gridpos).DrawTitle(gridpos*SpriteCodex::tileSize,gfx,IsFucked);
 		}
 	}
 }
 
 void MemeSweeper::RevealedOnClick(Vei2 & gridpos)
 {
-	assert(gridpos.x > 0
-		&& gridpos.x < width*SpriteCodex::tileSize
-		&& gridpos.y < height*SpriteCodex::tileSize
-		&& gridpos.y > 0);
-	GetTitle(gridpos / SpriteCodex::tileSize).SetReveal();
+	if (!IsFucked)
+	{
+		assert(gridpos.x > 0
+			&& gridpos.x < width*SpriteCodex::tileSize
+			&& gridpos.y < height*SpriteCodex::tileSize
+			&& gridpos.y > 0);
+		GetTitle(gridpos / SpriteCodex::tileSize).SetReveal();
+		if (GetTitle(gridpos / SpriteCodex::tileSize).HasMeme)
+		{
+			IsFucked = true;
+		}
+	}
 }
 
 void MemeSweeper::FlaggedOnClick(Vei2 & gridpos)
 {
-	assert(gridpos.x > 0
-		&& gridpos.x < width*SpriteCodex::tileSize
-		&& gridpos.y < height*SpriteCodex::tileSize
-		&& gridpos.y > 0);
-	GetTitle(gridpos / SpriteCodex::tileSize).SetFlagged();
+	if (!IsFucked)
+	{
+		assert(gridpos.x > 0
+			&& gridpos.x < width*SpriteCodex::tileSize
+			&& gridpos.y < height*SpriteCodex::tileSize
+			&& gridpos.y > 0);
+		GetTitle(gridpos / SpriteCodex::tileSize).SetFlagged();
+	}
 }
 
 
@@ -110,26 +120,67 @@ void MemeSweeper::Title::SpawnMeme()
 	HasMeme = true;
 }
 
-void MemeSweeper::Title::DrawTitle(Vei2 & screenpos, Graphics & gfx)
+void MemeSweeper::Title::DrawTitle(Vei2& screenpos, Graphics& gfx, bool Fuck)
 {
-	switch (state)
+	if (!Fuck)
 	{
-	case hidden:
-		SpriteCodex::DrawTileButton(screenpos, gfx);
-		break;
-	case revealed:
-		if (!HasMeme)
+		switch (state)
 		{
-			SpriteCodex::DrawTileNum(screenpos, nNeighbouringMemes,gfx);
+		case hidden:
+			SpriteCodex::DrawTileButton(screenpos, gfx);
+			break;
+		case revealed:
+			if (!HasMeme)
+			{
+				SpriteCodex::DrawTileNum(screenpos, nNeighbouringMemes, gfx);
+			}
+			else
+			{
+				SpriteCodex::DrawTileBomb(screenpos, gfx);
+			}
+			break;
+		case flagged:
+			SpriteCodex::DrawTileButton(screenpos, gfx);
+			SpriteCodex::DrawTileFlag(screenpos, gfx);
 		}
-		else
+	}
+	else if (Fuck)
+	{
+		switch (state)
 		{
-			SpriteCodex::DrawTileBomb(screenpos, gfx);
+		case hidden:
+			if (HasMeme)
+			{
+				SpriteCodex::DrawTileBomb(screenpos, gfx);
+			}
+			else
+			{
+				SpriteCodex::DrawTileButton(screenpos, gfx);
+			}
+			break;
+		case revealed:
+			if (!HasMeme)
+			{
+				SpriteCodex::DrawTileNum(screenpos, nNeighbouringMemes, gfx);
+			}
+			else
+			{
+				SpriteCodex::DrawTileBombRed(screenpos, gfx);
+			}
+			break;
+		case flagged:
+			if (HasMeme)
+			{
+				SpriteCodex::DrawTileBomb(screenpos, gfx);
+				SpriteCodex::DrawTileFlag(screenpos, gfx);
+			}
+			else
+			{
+				SpriteCodex::DrawTileBomb(screenpos, gfx);
+				SpriteCodex::DrawTileCross(screenpos, gfx);
+			}
+
 		}
-		break;
-	case flagged:
-		SpriteCodex::DrawTileButton(screenpos, gfx);
-		SpriteCodex::DrawTileFlag(screenpos, gfx);
 	}
 }
 

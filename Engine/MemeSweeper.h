@@ -11,13 +11,14 @@ public:
 	void DrawField(Graphics& gfx);
 	void RevealedOnClick(Vei2& gridpos);
 	void FlaggedOnClick(Vei2& gridpos);
+	bool IsFucked = false;
 	
 private:
 	class Title
 	{
 	public:
 	void SpawnMeme();
-	void DrawTitle(Vei2& screenpos, Graphics& gfx);
+	void DrawTitle(Vei2& screenpos, Graphics& gfx, bool Fuck);
 	void SetReveal();
 	bool IsRevealed();
 	void SetFlagged();
@@ -39,4 +40,5 @@ private:
 	static const int height = 28;
 	Title Field[width*height];
 	RectI rec = { 0,width*SpriteCodex::tileSize,0,height*SpriteCodex::tileSize };
+	
 };
