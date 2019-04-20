@@ -1,9 +1,11 @@
 #include "MemeSweeper.h"
 #include <random>
 #include "SpriteCodex.h"
+#include <assert.h>
 
 MemeSweeper::MemeSweeper(int nMemes)
 {
+	
 	std::random_device rd;
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> xdist (0, width - 1);
@@ -51,6 +53,10 @@ void MemeSweeper::DrawField(Graphics & gfx)
 
 void MemeSweeper::RevealedOnClick(Vei2 & gridpos)
 {
+	assert(gridpos.x > 0
+		&& gridpos.x < width*SpriteCodex::tileSize
+		&& gridpos.y < height*SpriteCodex::tileSize
+		&& gridpos.y > 0);
 	GetTitle(gridpos / SpriteCodex::tileSize).SetReveal();
 }
 
