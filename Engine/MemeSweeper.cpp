@@ -28,11 +28,11 @@ bool MemeSweeper::CheckMeme(Vei2 & gridpos)
 
 void MemeSweeper::DrawField(Graphics & gfx)
 {
-	for (Vei2 gridpos{ 0,0 }; gridpos.x <= width; ++gridpos.x)
+	for (Vei2 gridpos{ 0,0 }; gridpos.x < width; ++gridpos.x)
 	{
-		for (gridpos.y = 0; gridpos.y <= height; ++gridpos.y)
+		for (gridpos.y = 0; gridpos.y < height; ++gridpos.y)
 		{
-			GetTitle(gridpos).DrawTitle(gridpos*SpriteCodex::tileSize, gfx);
+			GetTitle(gridpos).DrawTitle(gridpos*SpriteCodex::tileSize,gfx);
 		}
 	}
 }
