@@ -1,4 +1,4 @@
-#include "MemeField.h"
+#include "MemeField.h"	
 #include <assert.h>
 #include <random>
 #include "Vei2.h"
@@ -121,6 +121,8 @@ void MemeField::Tile::SetNeighborMemeCount( int memeCount )
 	nNeighborMemes = memeCount;
 }
 
+
+
 MemeField::MemeField( const Vei2& center,int nMemes )
 	:
 	topLeft( center - Vei2( width * SpriteCodex::tileSize,height * SpriteCodex::tileSize ) / 2 )
@@ -207,6 +209,31 @@ MemeField::State MemeField::GetState() const
 	return state;
 }
 
+void MemeField::set_size(char T)
+{
+	switch (T)
+	{
+	case 'L':
+	{
+		width = 8*3;
+		height = 6*3;
+		break;
+	}
+	case 'M':
+	{
+		width = 8 * 2;
+		height = 6 * 2;
+
+		break;
+	}
+	case 'S':
+	{
+		width = 8*1;
+		height = 6*1;
+	}
+	}
+}
+
 void MemeField::RevealTile( const Vei2& gridPos )
 {
 	Tile& tile = TileAt( gridPos );
@@ -275,10 +302,11 @@ int MemeField::CountNeighborMemes( const Vei2 & gridPos )
 
 bool MemeField::GameIsWon() const
 {
-	for( const Tile& t : field )
+	//const Tile& t : field
+	for( int i = 0; i <sizeof(field);++i )
 	{
-		if( (t.HasMeme() && !t.IsFlagged()) ||
-			(!t.HasMeme() && !t.IsRevealed()) )
+		if( (field[i].HasMeme() && !field[i].IsFlagged()) ||
+			(!field[i].HasMeme() && !field[i].IsRevealed()) )
 		{
 			return false;
 		}

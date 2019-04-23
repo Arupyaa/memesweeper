@@ -72,10 +72,30 @@ void Game::UpdateModel()
 			switch( s )
 			{
 			case SelectionMenu::Size::Small:
-			case SelectionMenu::Size::Medium:
-			case SelectionMenu::Size::Large:
+			{
+				field.set_size('S');
 				state = State::Memesweeper;
+				break;
 			}
+			case SelectionMenu::Size::Medium:
+			{
+				field.set_size('M');
+				field = MemeField(gfx.GetRect().GetCenter(), 4);
+				state = State::Memesweeper;
+				
+
+				break;
+			}
+			case SelectionMenu::Size::Large:
+			{
+				field.set_size('L');
+				field = MemeField(gfx.GetRect().GetCenter(), 4);
+				state = State::Memesweeper;
+				break;
+			}
+				
+			}
+
 		}
 	}
 }

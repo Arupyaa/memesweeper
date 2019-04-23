@@ -44,6 +44,8 @@ public:
 	void OnRevealClick( const Vei2& screenPos );
 	void OnFlagClick( const Vei2& screenPos );
 	State GetState() const;
+	//my own function
+	void set_size(char T);
 private:
 	void RevealTile( const Vei2& gridPos );
 	Tile& TileAt( const Vei2& gridPos );
@@ -52,12 +54,13 @@ private:
 	int CountNeighborMemes( const Vei2& gridPos );
 	bool GameIsWon() const;
 private:
-	static constexpr int width = 8;
-	static constexpr int height = 6;
+	int width = 8;
+	int height = 6;
 	static constexpr int borderThickness = 10;
 	static constexpr Color borderColor = Colors::Blue;
 	Sound sndLose = Sound( L"spayed.wav" );
 	Vei2 topLeft;
 	State state = State::Memeing;
-	Tile field[width * height];
+	Tile* field = new Tile[width*height];
+	//Tile field[width * height];
 };
